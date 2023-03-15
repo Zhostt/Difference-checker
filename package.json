@@ -23,7 +23,9 @@
     "eslint-plugin-import": "^2.27.5"
   },
   "bin": {
-  "brain-games": "bin/brain-games.js"
+    "gendiff": "bin/gendiff.js"
+  },
+  "dependencies": {
+    "commander": "^10.0.0"
   }
-
 }
