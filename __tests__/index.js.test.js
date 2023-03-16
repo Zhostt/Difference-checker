@@ -29,8 +29,8 @@ const expectedOneEmpty = `{
  - timeout: 50
 }`;
 
-const path1 = '/home/boris/genDiff/__fixtures__/file1.json'
-const path2 = '__fixtures__/file2.json'
+const path1 = '/home/boris/genDiff/__fixtures__/file1.json';
+const path2 = '__fixtures__/file2.json';
 
 describe('check File Extension', () => {
   test('checkFileExtension basic run', () => {
@@ -39,14 +39,14 @@ describe('check File Extension', () => {
 });
 
 describe('Make Filepath > Objects', () => {
-    test('make Filepath Object - ABSOLUTE path', () => {
+  test('make Filepath Object - ABSOLUTE path', () => {
     expect(gendiff.makeFilepathObject(path1)).toEqual(file1);
   });
 
-    test('make Filepath Object - RELATIVE path', () => {
+  test('make Filepath Object - RELATIVE path', () => {
     expect(gendiff.makeFilepathObject(path2)).toEqual(file2);
   });
-})
+});
 
 describe('Compare function', () => {
   test('compareJSONS basic obj compare', () => {
