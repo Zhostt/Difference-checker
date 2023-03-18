@@ -1,6 +1,5 @@
 install: install-deps
-	npx simple-git-hooks
-	y
+	# npx simple-git-hooks
 install-deps:
 	npm ci
 lint:
