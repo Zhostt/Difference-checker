@@ -39,6 +39,8 @@ const __dirname = dirname(__filename);
 const path1 = path.join(__dirname, '../__fixtures__/file1.json');
 const path2 = '__fixtures__/file2.json';
 const path1Relative = '__fixtures__/file1.json'
+const path3Yml = path.join(__dirname, '../__fixtures__/file1.yml');
+const path4Yml = '__fixtures__/file2.YAML';
 
 describe('check File Extension', () => {
   test('checkFileExtension basic run', () => {
@@ -71,8 +73,14 @@ describe('Compare function', () => {
 
 
 describe('GenDiff - Final function', () => {
-  test('Gendiff basic run', () => {
+  test('Gendiff JSON', () => {
     expect(gendiff.genDiff(path1, path2)).toEqual(expectedBasic);
+  });
+  test('Gendiff YML', () => {
+    expect(gendiff.genDiff(path3Yml, path4Yml)).toEqual(expectedBasic);
+  });
+  test('Gendiff JSON vs YML', () => {
+    expect(gendiff.genDiff(path1, path4Yml)).toEqual(expectedBasic);
   });
   test('Gendiff empty path', () => {
     expect(gendiff.genDiff('', '')).toEqual('enter valid path');
