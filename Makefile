@@ -7,6 +7,6 @@ lint:
 gendiff:
 	node bin/gendiff.js
 test:
-	npx jest --watchAll
+	npx jest
 test-coverage:
 	npm test -- --coverage --coverageProvider=v8
