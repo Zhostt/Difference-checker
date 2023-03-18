@@ -1,6 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 import _ from 'lodash';
 import pathParserToObject from '../src/parsers.js'
+import path from 'path';
 
 // проверка расширений файлов, определение дальнешего пути работы
 export const checkFileExtension = (path1, path2) => {
@@ -10,8 +11,16 @@ export const checkFileExtension = (path1, path2) => {
   }
 };
 
-// Сравнение 2 JSON файлов
-export const compareJSONS = (file1, file2) => {
+// Превращатель пути в абсолютный
+export const pathAbsolutizer = (pathGiven) => {
+  if (pathGiven.startsWith('/')) {
+    return pathGiven
+  }
+  return path.resolve(pathGiven);
+}
+
+// Сравнение 2 объектов, вывод строки
+export const compareObjects = (file1, file2) => {
   const keysAll = Object.keys(file1).concat(Object.keys(file2));
   const keysAllUniq = [...new Set(keysAll)].sort();
 
@@ -41,9 +50,9 @@ export const genDiff = (path1, path2) => {
     return 'enter valid path';
   }
   if (checkFileExtension(path1, path2) === 'JSON') {
-    const file1 = pathParserToObject(path1);
-    const file2 = pathParserToObject(path2);
-    return compareJSONS(file1, file2);
+    const [pathAbs1, pathAbs2] = [pathAbsolutizer(path1), pathAbsolutizer(path2)]
+    const [file1, file2] = [pathParserToObject(pathAbs1),pathParserToObject(pathAbs2)]
+    return compareObjects(file1, file2);
   }
 };
 

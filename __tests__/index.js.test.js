@@ -38,6 +38,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const path1 = path.join(__dirname, '../__fixtures__/file1.json');
 const path2 = '__fixtures__/file2.json';
+const path1Relative = '__fixtures__/file1.json'
 
 describe('check File Extension', () => {
   test('checkFileExtension basic run', () => {
@@ -45,19 +46,26 @@ describe('check File Extension', () => {
   });
 });
 
+describe('path Absolutizer', () => {
+  test('path Absolutizer basic check', () => {
+  expect(gendiff.pathAbsolutizer(path1Relative)).toEqual(path1);
+  });
+});
+
 describe('Compare function', () => {
   test('compareJSONS basic obj compare', () => {
-    expect(gendiff.compareJSONS(file1, file2)).toEqual(expectedBasic);
+    expect(gendiff.compareObjects(file1, file2)).toEqual(expectedBasic);
   });
 
   test('compareJSONS empty obj compare', () => {
-    expect(gendiff.compareJSONS({}, {})).toEqual('{}');
+    expect(gendiff.compareObjects({}, {})).toEqual('{}');
   });
 
   test('compareJSONS one empty compare', () => {
-    expect(gendiff.compareJSONS(file1, {})).toEqual(expectedOneEmpty);
+    expect(gendiff.compareObjects(file1, {})).toEqual(expectedOneEmpty);
   });
 });
+
 
 describe('GenDiff - Final function', () => {
   test('Gendiff basic run', () => {

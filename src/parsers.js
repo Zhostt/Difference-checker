@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import path from 'path';
 
+
 // JSON преобразователь путей к файлам в их содержимое в виде объекта
 const pathParserToObject = (pathGiven) => {
     // если путь уже абсолютный
