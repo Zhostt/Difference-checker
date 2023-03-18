@@ -1,5 +1,5 @@
 install-deps:
-        npm ci
+	npm ci
 install:
 	install-deps
 	npx simple-git-hooks
