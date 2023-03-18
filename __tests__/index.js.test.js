@@ -1,4 +1,8 @@
 import * as gendiff from '../src/index.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
 
 const file1 = {
   host: 'hexlet.io',
@@ -29,7 +33,11 @@ const expectedOneEmpty = `{
  - timeout: 50
 }`;
 
-const path1 = '/home/boris/genDiff/__fixtures__/file1.json';
+// Ниже мы получаем абсолютный путь в любом месте - даже в вирт окружении (нужно для тестов на гите)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const path1 = path.join(__dirname, '../__fixtures__/file1.json');
+console.log(path1)
 const path2 = '__fixtures__/file2.json';
 
 describe('check File Extension', () => {
