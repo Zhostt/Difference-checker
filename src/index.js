@@ -5,10 +5,13 @@ import path from 'path';
 import fs from 'fs';
 
 // проверка расширений файлов, определение дальнешего пути работы
-export const checkFileExtension = (path1, path2) => {
-  const [JSON, YML, JSON_YML, YML_JSON] = ['JSON', 'YML', 'JSON_YML', 'YML_JSON'];
-  if (path1.slice(-5) === path2.slice(-5) && (path1.slice(-5) === '.json' || path1.slice(-5) === '.JSON')) {
+export const checkFileExtension = (pathGiven) => {
+  const [JSON, YML] = ['JSON', 'YML'];
+  if (pathGiven.slice(-5) === '.json' || pathGiven.slice(-5) === '.JSON') {
     return JSON;
+  }
+  if (pathGiven.slice(-2) === 'ml' || pathGiven.slice(-2) === 'ML') {
+    return YML;
   }
 };
 
@@ -57,10 +60,10 @@ export const genDiff = (path1, path2) => {
   }
   const [pathAbs1, pathAbs2] = [pathAbsolutizer(path1), pathAbsolutizer(path2)]
   const [dataString1, dataString2] = [fileStringExtractor(pathAbs1), fileStringExtractor(pathAbs2)]
-  if (checkFileExtension(pathAbs1, pathAbs2) === 'JSON') {
-    const [object1, object2] = [stringParserToObject(dataString1),stringParserToObject(dataString2)]
-    return compareObjects(object1, object2);
-  }
+
+  const object1 = stringParserToObject(dataString1, checkFileExtension(pathAbs1))
+  const object2 = stringParserToObject(dataString2, checkFileExtension(pathAbs2))
+  return compareObjects(object1, object2);
 };
 
 /*
