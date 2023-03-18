@@ -1,8 +1,6 @@
-import * as gendiff from '../src/index.js';
-import path from 'path';
+import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-
+import * as gendiff from '../src/index.js';
 
 const file1 = {
   host: 'hexlet.io',
@@ -38,7 +36,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const path1 = path.join(__dirname, '../__fixtures__/file1.json');
 const path2 = '__fixtures__/file2.json';
-const path1Relative = '__fixtures__/file1.json'
+const path1Relative = '__fixtures__/file1.json';
 const path3Yml = path.join(__dirname, '../__fixtures__/file1.yml');
 const path4Yml = '__fixtures__/file2.YAML';
 
@@ -52,10 +50,10 @@ describe('check File Extension', () => {
 
 describe('path Absolutizer', () => {
   test('path Absolutizer - relative to abs', () => {
-  expect(gendiff.pathAbsolutizer(path1Relative)).toEqual(path1);
+    expect(gendiff.pathAbsolutizer(path1Relative)).toEqual(path1);
   });
-  test('path Absolutizer - relative to abs', () => {
-  expect(gendiff.pathAbsolutizer(path1)).toEqual(path1);
+  test('path Absolutizer - abs to abs', () => {
+    expect(gendiff.pathAbsolutizer(path1)).toEqual(path1);
   });
 });
 
@@ -72,7 +70,6 @@ describe('Compare function', () => {
     expect(gendiff.compareObjects(file1, {})).toEqual(expectedOneEmpty);
   });
 });
-
 
 describe('GenDiff - Final function', () => {
   test('Gendiff JSON', () => {

@@ -1,8 +1,8 @@
 /* eslint-disable no-restricted-syntax */
 import _ from 'lodash';
-import stringParserToObject from '../src/parsers.js'
 import path from 'path';
 import fs from 'fs';
+import stringParserToObject from './parsers.js';
 
 // проверка расширений файлов, определение дальнешего пути работы
 export const checkFileExtension = (pathGiven) => {
@@ -10,7 +10,7 @@ export const checkFileExtension = (pathGiven) => {
   if (path.extname(pathGiven) === '.json' || path.extname(pathGiven) === '.JSON') {
     return JSON;
   }
-  if (['.yml','.YML','.YAML','.yaml'].includes(path.extname(pathGiven))) {
+  if (['.yml', '.YML', '.YAML', '.yaml'].includes(path.extname(pathGiven))) {
     return YML;
   }
 };
@@ -18,15 +18,13 @@ export const checkFileExtension = (pathGiven) => {
 // Превращатель пути в абсолютный
 export const pathAbsolutizer = (pathGiven) => {
   if (pathGiven.startsWith('/')) {
-    return pathGiven
+    return pathGiven;
   }
   return path.resolve(pathGiven);
-}
+};
 
 // Извлекаем строку из файла по указанному пути
-export const fileStringExtractor = (absPath) => {
-  return fs.readFileSync(absPath, 'UTF-8')
-}
+export const fileStringExtractor = (absPath) => fs.readFileSync(absPath, 'UTF-8');
 
 // Сравнение 2 объектов, вывод строки
 export const compareObjects = (file1, file2) => {
@@ -58,11 +56,11 @@ export const genDiff = (path1, path2) => {
   if (path1.length === 0 || path2.length === 0) {
     return 'enter valid path';
   }
-  const [pathAbs1, pathAbs2] = [pathAbsolutizer(path1), pathAbsolutizer(path2)]
-  const [dataString1, dataString2] = [fileStringExtractor(pathAbs1), fileStringExtractor(pathAbs2)]
+  const [pathAbs1, pathAbs2] = [pathAbsolutizer(path1), pathAbsolutizer(path2)];
+  const [dataString1, dataString2] = [fileStringExtractor(pathAbs1), fileStringExtractor(pathAbs2)];
 
-  const object1 = stringParserToObject(dataString1, checkFileExtension(pathAbs1))
-  const object2 = stringParserToObject(dataString2, checkFileExtension(pathAbs2))
+  const object1 = stringParserToObject(dataString1, checkFileExtension(pathAbs1));
+  const object2 = stringParserToObject(dataString2, checkFileExtension(pathAbs2));
   return compareObjects(object1, object2);
 };
 
