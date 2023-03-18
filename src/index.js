@@ -7,10 +7,10 @@ import fs from 'fs';
 // проверка расширений файлов, определение дальнешего пути работы
 export const checkFileExtension = (pathGiven) => {
   const [JSON, YML] = ['JSON', 'YML'];
-  if (pathGiven.slice(-5) === '.json' || pathGiven.slice(-5) === '.JSON') {
+  if (path.extname(pathGiven) === '.json' || path.extname(pathGiven) === '.JSON') {
     return JSON;
   }
-  if (pathGiven.slice(-2) === 'ml' || pathGiven.slice(-2) === 'ML') {
+  if (['.yml','.YML','.YAML','.yaml'].includes(path.extname(pathGiven))) {
     return YML;
   }
 };

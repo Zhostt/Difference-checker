@@ -44,7 +44,9 @@ const path4Yml = '__fixtures__/file2.YAML';
 
 describe('check File Extension', () => {
   test('checkFileExtension basic run', () => {
-    expect(gendiff.checkFileExtension(path1, path2)).toEqual('JSON');
+    expect(gendiff.checkFileExtension(path1)).toEqual('JSON');
+    expect(gendiff.checkFileExtension(path3Yml)).toEqual('YML');
+    expect(gendiff.checkFileExtension(path4Yml)).toEqual('YML');
   });
 });
 
