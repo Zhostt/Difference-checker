@@ -30,10 +30,7 @@
   },
   "dependencies": {
     "commander": "^10.0.0",
-<<<<<<< HEAD
     "eslint-config-airbnb": "^19.0.4",
-=======
->>>>>>> b279b79227db0ab4c9545d3c9ac8bbb114e3ffc9
     "fs": "^0.0.1-security",
     "lodash": "^4.17.21"
   }
