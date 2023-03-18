@@ -1,7 +1,6 @@
 /* eslint-disable no-restricted-syntax */
 import _ from 'lodash';
-import * as fs from 'fs';
-import path from 'path';
+import pathParserToObject from '../src/parsers.js'
 
 // проверка расширений файлов, определение дальнешего пути работы
 export const checkFileExtension = (path1, path2) => {
@@ -9,23 +8,6 @@ export const checkFileExtension = (path1, path2) => {
   if (path1.slice(-5) === path2.slice(-5) && (path1.slice(-5) === '.json' || path1.slice(-5) === '.JSON')) {
     return JSON;
   }
-};
-
-// преобразователь путей к файлам в их содержимое в виде объекта
-export const makeFilepathObject = (pathGiven) => {
-  // если путь уже абсолютный
-  if (pathGiven.startsWith('/')) {
-    const contentString = fs.readFileSync(pathGiven, 'UTF-8');
-    const parsedObject = JSON.parse(contentString);
-    return parsedObject;
-  }
-  // если путь относительный
-  const absPath = path.resolve(pathGiven);
-  const contentStringRelative = fs.readFileSync(absPath, 'UTF-8');
-  const parsedObjectRelative = JSON.parse(contentStringRelative);
-  return parsedObjectRelative;
-  // readFileSync(filePath, 'UTF-8') => дает строку файла
-  // JSON.parse(string) => нужный объект
 };
 
 // Сравнение 2 JSON файлов
@@ -59,8 +41,8 @@ export const genDiff = (path1, path2) => {
     return 'enter valid path';
   }
   if (checkFileExtension(path1, path2) === 'JSON') {
-    const file1 = makeFilepathObject(path1);
-    const file2 = makeFilepathObject(path2);
+    const file1 = pathParserToObject(path1);
+    const file2 = pathParserToObject(path2);
     return compareJSONS(file1, file2);
   }
 };

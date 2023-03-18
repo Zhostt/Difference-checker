@@ -37,22 +37,11 @@ const expectedOneEmpty = `{
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const path1 = path.join(__dirname, '../__fixtures__/file1.json');
-console.log(path1)
 const path2 = '__fixtures__/file2.json';
 
 describe('check File Extension', () => {
   test('checkFileExtension basic run', () => {
     expect(gendiff.checkFileExtension(path1, path2)).toEqual('JSON');
-  });
-});
-
-describe('Make Filepath > Objects', () => {
-  test('make Filepath Object - ABSOLUTE path', () => {
-    expect(gendiff.makeFilepathObject(path1)).toEqual(file1);
-  });
-
-  test('make Filepath Object - RELATIVE path', () => {
-    expect(gendiff.makeFilepathObject(path2)).toEqual(file2);
   });
 });
 
