@@ -47,8 +47,11 @@ describe('check File Extension', () => {
 });
 
 describe('path Absolutizer', () => {
-  test('path Absolutizer basic check', () => {
+  test('path Absolutizer - relative to abs', () => {
   expect(gendiff.pathAbsolutizer(path1Relative)).toEqual(path1);
+  });
+  test('path Absolutizer - relative to abs', () => {
+  expect(gendiff.pathAbsolutizer(path1)).toEqual(path1);
   });
 });
 

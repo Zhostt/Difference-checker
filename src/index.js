@@ -1,7 +1,8 @@
 /* eslint-disable no-restricted-syntax */
 import _ from 'lodash';
-import pathParserToObject from '../src/parsers.js'
+import stringParserToObject from '../src/parsers.js'
 import path from 'path';
+import fs from 'fs';
 
 // проверка расширений файлов, определение дальнешего пути работы
 export const checkFileExtension = (path1, path2) => {
@@ -17,6 +18,11 @@ export const pathAbsolutizer = (pathGiven) => {
     return pathGiven
   }
   return path.resolve(pathGiven);
+}
+
+// Извлекаем строку из файла по указанному пути
+export const fileStringExtractor = (absPath) => {
+  return fs.readFileSync(absPath, 'UTF-8')
 }
 
 // Сравнение 2 объектов, вывод строки
@@ -49,10 +55,11 @@ export const genDiff = (path1, path2) => {
   if (path1.length === 0 || path2.length === 0) {
     return 'enter valid path';
   }
-  if (checkFileExtension(path1, path2) === 'JSON') {
-    const [pathAbs1, pathAbs2] = [pathAbsolutizer(path1), pathAbsolutizer(path2)]
-    const [file1, file2] = [pathParserToObject(pathAbs1),pathParserToObject(pathAbs2)]
-    return compareObjects(file1, file2);
+  const [pathAbs1, pathAbs2] = [pathAbsolutizer(path1), pathAbsolutizer(path2)]
+  const [dataString1, dataString2] = [fileStringExtractor(pathAbs1), fileStringExtractor(pathAbs2)]
+  if (checkFileExtension(pathAbs1, pathAbs2) === 'JSON') {
+    const [object1, object2] = [stringParserToObject(dataString1),stringParserToObject(dataString2)]
+    return compareObjects(object1, object2);
   }
 };
 
