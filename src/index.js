@@ -2,9 +2,8 @@
 import _ from 'lodash';
 // import path from 'path';
 import fs from 'fs';
-import stringParserToObject from './parsers.js';
 import path, { dirname } from 'path';
-
+import stringParserToObject from './parsers.js';
 
 // проверка расширений файлов, определение дальнешего пути работы
 export const checkFileExtension = (pathGiven) => {
@@ -52,73 +51,73 @@ export const compareObjects = (file1, file2) => {
   return `{\n${resultString}}`;
 };
 
-
 // сравнение объектов (в тч вложенных)
 export const stylish = (file1, file2, depth = 1, space = '    ') => {
-  const [removed, added, equal] = ['- ', '+ ', '  ']
-  const margin = space.repeat(depth).slice(0, - equal.length)
+  const [removed, added, equal] = ['- ', '+ ', '  '];
+  const margin = space.repeat(depth).slice(0, -equal.length);
   const keysAll = Object.keys(file1).concat(Object.keys(file2));
   const keysAllUniq = [...new Set(keysAll)].sort();
-
 
   if (keysAll.length === 0) {
     return '{}';
   }
 
-  const stringify = (obj, depth) => {
-    const margin = space.repeat(depth).slice(0, - equal.length)
-    const marginNestedStr = margin + space + margin.slice(0, equal.length);
+  const stringify = (obj, innerDepth) => {
+    const innerMargin = space.repeat(innerDepth).slice(0, -equal.length);
+    const marginNestedStr = innerMargin + space + innerMargin.slice(0, equal.length);
     const objString = Object.keys(obj)
-    .reduce((acc, key) => {
-      if (!_.isObject(obj[key])){
-        acc +=`\n${marginNestedStr}${key}: ${obj[key]}`
+      .reduce((acc, key) => {
+        if (!_.isObject(obj[key])) {
+          acc += `\n${marginNestedStr}${key}: ${obj[key]}`;
+          return acc;
+        }
+        acc += `\n${marginNestedStr}${key}: ${stringify(obj[key], innerDepth + 1)}`
         return acc;
-      }
-      return `\n${marginNestedStr}${key}: ${stringify(obj[key], depth + 1)}`
-    },'')
-    const resultString = `{${objString}\n${margin + margin.slice(0, equal.length)}}`; 
+      }, '');
+    const resultString = `{${objString}\n${innerMargin + innerMargin.slice(0, equal.length)}}`;
     return resultString;
-  }
+  };
 
   const resultString = keysAllUniq.reduce((acc, key) => {
     const value1 = file1[key];
     const value2 = file2[key];
-    if (!_.isObject(value1) && !_.isObject(value2)){
-      if (file1[key] === file2[key] && file1[key].length > 0) {
-        acc += `${margin}${equal}${key}: ${file1[key]}\n`;
+    let [space1, space2] = [' ', ' ']
+    if (value1 === ''){
+      space1 = ''   
+    }
+    if (value2 === ''){
+      space2 = ''   
+    }
+    if (!_.isObject(value1) && !_.isObject(value2)) {
+      if (file1[key] === file2[key]) {
+        acc += `${margin}${equal}${key}:${space1}${file1[key]}\n`;
       } else if (Object.hasOwn(file1, key) && !Object.hasOwn(file2, key)) {
-        acc += `${margin}${removed}${key}: ${file1[key]}\n`;
+        acc += `${margin}${removed}${key}:${space1}${file1[key]}\n`;
       } else if (!Object.hasOwn(file1, key) && Object.hasOwn(file2, key)) {
-        acc += `${margin}${added}${key}: ${file2[key]}\n`;
+        acc += `${margin}${added}${key}:${space2}${file2[key]}\n`;
       } else if (Object.hasOwn(file1, key) && Object.hasOwn(file2, key)
       && file1[key] !== file2[key]) {
-        acc += `${margin}${removed}${key}: ${file1[key]}\n`;
-        acc += `${margin}${added}${key}: ${file2[key]}\n`;
-        }
+        acc += `${margin}${removed}${key}:${space1}${file1[key]}\n`;
+        acc += `${margin}${added}${key}:${space2}${file2[key]}\n`;
       }
-    else if (_.isObject(value1) && _.isObject(value2)){
-          acc +=  `${margin}  ${key}: ${stylish(value1, value2, depth + 1)}\n`;
-          // console.log(acc);
-     }
-    else if (((_.isObject(value1) && !_.isObject(value2)))){
-    acc += `${margin}${removed}${key}: ${stringify(value1, depth)}\n`;
-    if (value2 !== undefined){
-      acc += `${margin}${added}${key}: ${(value2)}\n`;
-    }
-   }
-    else if ((!_.isObject(value1) && _.isObject(value2))){
-      if (value1 !== undefined){
-        acc += `${margin}${removed}${key}: ${(value1)}\n`;
+    } else if (_.isObject(value1) && _.isObject(value2)) {
+      acc += `${margin}  ${key}: ${stylish(value1, value2, depth + 1)}\n`;
+    } else if (((_.isObject(value1) && !_.isObject(value2)))) {
+      acc += `${margin}${removed}${key}:${space1}${stringify(value1, depth)}\n`;
+      if (value2 !== undefined) {
+        acc += `${margin}${added}${key}:${space2}${(value2)}\n`;
       }
-      acc += `${margin}${added}${key}: ${(stringify(value2,depth))}\n`;
+    } else if ((!_.isObject(value1) && _.isObject(value2))) {
+      if (value1 !== undefined) {
+        acc += `${margin}${removed}${key}:${space1}${(value1)}\n`;
+      }
+      acc += `${margin}${added}${key}:${space2}${(stringify(value2, depth))}\n`;
     }
 
     return acc;
   }, '');
   return `{\n${resultString}${margin.slice(0, -equal.length)}}`;
 };
-
-
 
 export const genDiff = (path1, path2) => {
   if (path1.length === 0 || path2.length === 0) {
@@ -133,25 +132,37 @@ export const genDiff = (path1, path2) => {
 };
 
 const file1 = {
-common: {    HaveBoth: true,
+  common: {
+    HaveBoth: true,
     DontHave: 'aga',
-    NestedHaveBoth: {have: true},
-    NestedDontHave: {have: false},
-    NestedFirstOnly: {bitch: 'no'},
-    NestedNested: {key: {keyNN: 'value'}}}
+    NestedHaveBoth: { have: true },
+    NestedDontHave: { have: false },
+    NestedFirstOnly: { bitch: 'no', abc: 12345, deeper: {hola: 'piupo'} },
+    NestedNested: { key: { keyNN: 'value' } },
+  },
+};
+const file2 = {
+  common: {
+    HaveBoth: true,
+    DontHave: 'no',
+    OnlyInSecond: 'no',
+    NestedHaveBoth: { have: true },
+    NestedDontHave: { have: '123' },
+    NestedSecond: { one: 2 },
+    NestedNested: { key: { keyNN: 'AAA' } },
+    NestedNestedSECONDONLY: { aba: { booba: { ruka: 'zalupa' }, zhopa: 'govno' } },
+  },
+};
+
+const file3 = {
+  NestedFirstOnly: { bitch: 'no', abc: 12345, deeper: {hola: 'piupo'} },
 }
-const file2 =  {
-common:  {HaveBoth: true,
-  DontHave: 'no',
-  OnlyInSecond: 'no',
-  NestedHaveBoth: {have: true},
-  NestedDontHave: {have: '123'},
-  NestedSecond: {one: 2},
-  NestedNested: {key: {keyNN: 'AAA'}},
-  NestedNestedSECONDONLY: {aba: {booba: {ruka: 'zalupa'}, zhopa: 'govno'}}
-  }
-}
-console.log(stylish(file1, file2))
+
+const file4 = {
+  NestedFirstOnly23: { bitch: 'yes', abc: 21353, deeper: {hola: 'hahah'} },
+};
+
+console.log(stylish(file3, file4));
 /*
 console.log(compareObjects(file1, file2));
 console.log(compareObjects({}, {}));

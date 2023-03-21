@@ -11,8 +11,7 @@ const expectedBasic = `{
   + verbose: true
 }`;
 
-const expectedNested = 
-`{
+const expectedNested = `{
     common: {
       + follow: false
         setting1: Value 1
@@ -55,7 +54,7 @@ const expectedNested =
         }
         fee: 100500
     }
-}`
+}`;
 
 // Ниже мы получаем абсолютный путь в любом месте - даже в вирт окружении (нужно для тестов на гите)
 const __filename = fileURLToPath(import.meta.url);
@@ -64,10 +63,8 @@ const path1 = path.join(__dirname, '../__fixtures__/file1.json');
 const path2 = '__fixtures__/file2.json';
 const path3Yml = path.join(__dirname, '../__fixtures__/file1.yml');
 const path4Yml = '__fixtures__/file2.YAML';
-const path5NestedJSON = path.join(__dirname, '../__fixtures__/file1Nested.json')
-const path6NestedYML =  '__fixtures__/file2Nested.YAML'
-
-
+const path5NestedJSON = path.join(__dirname, '../__fixtures__/file1Nested.json');
+const path6NestedYML = '__fixtures__/file2Nested.YAML';
 
 describe('GenDiff - nested json yml diff', () => {
   test('Gendiff empty path', () => {
@@ -76,7 +73,7 @@ describe('GenDiff - nested json yml diff', () => {
   test('Gendiff NESTED basic - JSON, YML', () => {
     expect(gendiff.genDiff(path5NestedJSON, path6NestedYML)).toEqual(expectedNested);
   });
- //FLAT structure tests. Obsolete.
+  // FLAT structure tests. Obsolete.
   test('Gendiff JSON', () => {
     expect(gendiff.genDiff(path1, path2)).toEqual(expectedBasic);
   });
@@ -86,5 +83,4 @@ describe('GenDiff - nested json yml diff', () => {
   test('Gendiff JSON vs YML', () => {
     expect(gendiff.genDiff(path1, path4Yml)).toEqual(expectedBasic);
   });
-
 });
