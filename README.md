@@ -10,4 +10,5 @@ Can be used through command line interface or directly from .js files.
 
 
 https://asciinema.org/a/567785 - using -h command, comparing 2 JSON files. 
-https://asciinema.org/a/568164 - comapring JSONs, YMLs, YML with JSON
+https://asciinema.org/a/568164 - comparing JSONs, YMLs, YML with JSON
+https://asciinema.org/a/568946 - comparing nested JSONs and YMLs

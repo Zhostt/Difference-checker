@@ -71,7 +71,7 @@ export const stylish = (file1, file2, depth = 1, space = '    ') => {
           acc += `\n${marginNestedStr}${key}: ${obj[key]}`;
           return acc;
         }
-        acc += `\n${marginNestedStr}${key}: ${stringify(obj[key], innerDepth + 1)}`
+        acc += `\n${marginNestedStr}${key}: ${stringify(obj[key], innerDepth + 1)}`;
         return acc;
       }, '');
     const resultString = `{${objString}\n${innerMargin + innerMargin.slice(0, equal.length)}}`;
@@ -81,12 +81,12 @@ export const stylish = (file1, file2, depth = 1, space = '    ') => {
   const resultString = keysAllUniq.reduce((acc, key) => {
     const value1 = file1[key];
     const value2 = file2[key];
-    let [space1, space2] = [' ', ' ']
-    if (value1 === ''){
-      space1 = ''   
+    let [space1, space2] = [' ', ' '];
+    if (value1 === '') {
+      space1 = '';
     }
-    if (value2 === ''){
-      space2 = ''   
+    if (value2 === '') {
+      space2 = '';
     }
     if (!_.isObject(value1) && !_.isObject(value2)) {
       if (file1[key] === file2[key]) {
@@ -131,52 +131,4 @@ export const genDiff = (path1, path2) => {
   return stylish(object1, object2);
 };
 
-const file1 = {
-  common: {
-    HaveBoth: true,
-    DontHave: 'aga',
-    NestedHaveBoth: { have: true },
-    NestedDontHave: { have: false },
-    NestedFirstOnly: { bitch: 'no', abc: 12345, deeper: {hola: 'piupo'} },
-    NestedNested: { key: { keyNN: 'value' } },
-  },
-};
-const file2 = {
-  common: {
-    HaveBoth: true,
-    DontHave: 'no',
-    OnlyInSecond: 'no',
-    NestedHaveBoth: { have: true },
-    NestedDontHave: { have: '123' },
-    NestedSecond: { one: 2 },
-    NestedNested: { key: { keyNN: 'AAA' } },
-    NestedNestedSECONDONLY: { aba: { booba: { ruka: 'zalupa' }, zhopa: 'govno' } },
-  },
-};
 
-const file3 = {
-  NestedFirstOnly: { bitch: 'no', abc: 12345, deeper: {hola: 'piupo'} },
-}
-
-const file4 = {
-  NestedFirstOnly23: { bitch: 'yes', abc: 21353, deeper: {hola: 'hahah'} },
-};
-
-console.log(stylish(file3, file4));
-/*
-console.log(compareObjects(file1, file2));
-console.log(compareObjects({}, {}));
-console.log(compareObjects(file1, {}));
-
-expect
-gendiff filepath1.json filepath2.json
-
-{
-  - follow: false
-    host: hexlet.io
-  - proxy: 123.234.53.22
-  - timeout: 50
-  + timeout: 20
-  + verbose: true
-}
-*/
