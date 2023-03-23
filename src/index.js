@@ -14,8 +14,7 @@ export const checkFileExtension = (pathGiven) => {
   if (['.yml', '.YML', '.YAML', '.yaml'].includes(path.extname(pathGiven))) {
     return YML;
   }
-  console.log('unexpected file extension. Try yml/yaml or json')
-  return;
+  console.log('unexpected file extension. Try yml/yaml or json');
 };
 
 // Превращатель пути в абсолютный
@@ -36,7 +35,7 @@ export const compareTreeFormer = (object1, object2) => {
   // statuses: removed, added, equal, modified, stringified1, stringified2
   const innerTreeFormer = (file1, file2, depthAcc) => {
     const keysAll = Object.keys(file1).concat(Object.keys(file2));
-    const keysAllUniq = [...new Set(keysAll)]; //.sort();  Sort is not allowed
+    const keysAllUniq = [...new Set(keysAll)].sort(); 
 
     // Итерирующая каждый ключ функция
     const iter = (key, depth) => {
