@@ -34,7 +34,7 @@ const stylish = (array, space = '    ') => {
     const margin = space.repeat(depth).slice(0, -leftMargin);
     const marginSizeOfEqualSign = margin.slice(0, leftMargin);
 
-/*
+    /*
     // spaces should not be added if value is ''. Obsolete.
     let [space1, space2] = [' ', ' '];
     if (value1 === '') {
