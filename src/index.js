@@ -177,7 +177,9 @@ export const genDiff = (path1, path2, format = 'stylish') => {
 
   const object1 = stringParserToObject(dataString1, checkFileExtension(pathAbs1));
   const object2 = stringParserToObject(dataString2, checkFileExtension(pathAbs2));
-  if (format === 'stylish') return `{\n${stylish(compareTreeFormer(object1, object2))}}`;
+  if (format === 'stylish') return `{\n${stylish(compareTreeFormer(object1, object2))}}`
+  if (format === 'plain') return `{\n${plain(compareTreeFormer(object1, object2))}}`;
+  return ('Error: Enter valid format or use default - stylish')
 };
 
 /* for quick  test purposes
