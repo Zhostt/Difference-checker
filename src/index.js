@@ -84,7 +84,7 @@ export const compareTreeFormer = (object1, object2) => {
   return innerTreeFormer(object1, object2, 1);
 };
 
-const stylish = (array, space = '    ') => {
+export const stylish = (array, space = '    ') => {
   // node structure = {key, status, depth, value1, value2}
   // statuses: removed, added, equal, modified, stringified1, stringified2
   const spaceLength = space.length;
@@ -155,17 +155,65 @@ const stylish = (array, space = '    ') => {
         acc += `${margin}${addedSign}${key}:${space2}${stringifyObj(value2, depth + 1)}\n`;
         return acc;
       default:
-        console.log('ERROR - wrong status type in recieved object');
+        console.log('ERROR - wrong status type in recieved object, check compareTreeFormer func');
     }
     return acc;
   };
 
+  //  Cannot destructure property 'key' of 'object' as it is undefined.
+  // If using  array.reduce(iter,''). Dunno why.
   let result = '';
   for (const object of array) {
     result += iter('', object);
   }
 
   return result;
+};
+
+export const plain = (arrayTree) => {
+  // node structure = {key, status, depth, value1, value2}
+  // statuses: removed, added, equal, modified, stringified1, stringified2
+  const [removed, added, equal, modified, nested, stringified1, stringified2] = ['removed', 'added', 'equal', 'modified', 'nested', 'stringified1', 'stringified2'];
+
+  const iter = (array, ancestry) => {
+    let resultString = '';
+
+    for (const object of array) {
+      const {
+        key, status, value1, value2,
+      } = object;
+      // To prevent '.' in the begin of the path (like '.a.b.c')
+      let newPath = ancestry === '' ? key : `${ancestry}.${key}`;
+      // set quotes for string values, no quotes for others
+      const value1Quotes = typeof (value1) === 'string' ? `'${value1}'` : value1;
+      const value2Quotes = typeof (value2) === 'string' ? `'${value2}'` : value2;
+
+      switch (status) {
+        case removed:
+          resultString += `Property '${newPath}' was removed\n`;
+          break;
+        case added:
+          resultString += `Property '${newPath}' was added with value: ${value2Quotes}\n`;
+          break;
+        case modified:
+          resultString += `Property '${newPath}' was updated. From ${value1Quotes} to ${value2Quotes}\n`;
+          break;
+        case nested:
+          resultString += iter(value1, newPath);
+          break;
+        case stringified1:
+          resultString += value2 === undefined ? `Property '${newPath}' was removed\n` : `Property '${newPath}' was updated. From [complex value] to ${value2Quotes}\n`;
+          break;
+        case stringified2:
+          resultString += value1 === undefined ? `Property '${newPath}' was added with value: [complex value]\n` : `Property '${newPath}' was updated. From ${value1Quotes} to [complex value]\n`;
+          break;
+        default:
+          break;
+      }
+    }
+    return resultString;
+  };
+  return (iter(arrayTree, '')).slice(0, -1); // slice to cut the last \n
 };
 
 export const genDiff = (path1, path2, format = 'stylish') => {
@@ -177,17 +225,39 @@ export const genDiff = (path1, path2, format = 'stylish') => {
 
   const object1 = stringParserToObject(dataString1, checkFileExtension(pathAbs1));
   const object2 = stringParserToObject(dataString2, checkFileExtension(pathAbs2));
-  if (format === 'stylish') return `{\n${stylish(compareTreeFormer(object1, object2))}}`
-  if (format === 'plain') return `{\n${plain(compareTreeFormer(object1, object2))}}`;
-  return ('Error: Enter valid format or use default - stylish')
+  if (format === 'stylish') return `{\n${stylish(compareTreeFormer(object1, object2))}}`;
+  if (format === 'plain') return plain(compareTreeFormer(object1, object2));
+  return ('Error: Enter valid format or use default - stylish');
 };
 
-/* for quick  test purposes
-const obj1 = {a: {b: {c: 1}}, d: 'e', modded: '1',
-f: {nestedOne: 'object'}, g: 'notNestedFirst',
-h: {nested: 'firstOnly'}, removed: 'first'}
-const obj2 = {a: {b: {c: 2}},
-d: 'e', modded: '2',
-f: 'notObj', g: {nested: 'second'},
-added: 'second'}
-*/
+// for quick  test purposes
+const obj1 = {
+  a: {
+    b: {
+      c: 1,
+    },
+  },
+  d: 'e',
+  modded: '1',
+  f: { nestedOne: 'object' },
+  g: 'notNestedFirst',
+  h: { nested: 'firstOnly' },
+  removed: 'first',
+};
+
+const obj2 = {
+  a:
+  {
+    b:
+    { c: 2 },
+  },
+  d: 'e',
+  modded: '2',
+  f: 'notObj',
+  g: {
+    nested: 'second',
+  },
+  added: 'second',
+};
+
+console.log(plain(compareTreeFormer(obj1, obj2)));

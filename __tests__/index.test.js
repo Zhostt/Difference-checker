@@ -11,7 +11,7 @@ const expectedBasic = `{
   + verbose: true
 }`;
 
-const expectedNested = `{
+const expectedStylish = `{
     common: {
       + follow: false
         setting1: Value 1
@@ -56,6 +56,18 @@ const expectedNested = `{
     }
 }`;
 
+const expectedPlain = `Property 'common.follow' was added with value: false
+Property 'common.setting2' was removed
+Property 'common.setting3' was updated. From true to null
+Property 'common.setting4' was added with value: 'blah blah'
+Property 'common.setting5' was added with value: [complex value]
+Property 'common.setting6.doge.wow' was updated. From '' to 'so much'
+Property 'common.setting6.ops' was added with value: 'vops'
+Property 'group1.baz' was updated. From 'bas' to 'bars'
+Property 'group1.nest' was updated. From [complex value] to 'str'
+Property 'group2' was removed
+Property 'group3' was added with value: [complex value]`;
+
 // Ниже мы получаем абсолютный путь в любом месте - даже в вирт окружении (нужно для тестов на гите)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -70,17 +82,20 @@ describe('GenDiff - nested json yml diff', () => {
   test('Gendiff empty path', () => {
     expect(gendiff.genDiff('', '')).toEqual('enter valid path');
   });
-  test('Gendiff NESTED basic - JSON, YML', () => {
-    expect(gendiff.genDiff(path5NestedJSON, path6NestedYML)).toEqual(expectedNested);
+  test('Gendiff nexted STYLISH - JSON, YML', () => {
+    expect(gendiff.genDiff(path5NestedJSON, path6NestedYML)).toEqual(expectedStylish);
   });
-  // FLAT structure tests. Obsolete.
-  test('Gendiff JSON', () => {
+  test('Gendiff nexted PLAIN - JSON, YML', () => {
+    expect(gendiff.genDiff(path5NestedJSON, path6NestedYML, 'plain')).toEqual(expectedPlain);
+  });
+  // FLAT structure tests. Kinda obsolete.
+  test('Gendiff plain JSON', () => {
     expect(gendiff.genDiff(path1, path2)).toEqual(expectedBasic);
   });
-  test('Gendiff YML', () => {
+  test('Gendiff plain YML', () => {
     expect(gendiff.genDiff(path3Yml, path4Yml)).toEqual(expectedBasic);
   });
-  test('Gendiff JSON vs YML', () => {
+  test('Gendiff plain JSON vs YML', () => {
     expect(gendiff.genDiff(path1, path4Yml)).toEqual(expectedBasic);
   });
 });
