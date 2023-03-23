@@ -96,3 +96,37 @@ export const genDiff = (path1, path2, format = 'stylish') => {
   const compareTree = compareTreeFormer(object1, object2);
   return formatSelector(compareTree, format);
 };
+
+
+const obj1 = {
+  a: {
+    b: {
+      c: 1,
+    },
+  },
+  d: 'e',
+  modded: '1',
+  f: { nestedOne: 'object' },
+  g: 'notNestedFirst',
+  h: { nested: 'firstOnly' },
+  removed: 'first',
+};
+
+const obj2 = {
+  a:
+  {
+    b:
+    { c: 2 },
+  },
+  d: 'e',
+  modded: '2',
+  f: 'notObj',
+  g: {
+    nested: 'second',
+  },
+  added: 'second',
+};
+
+
+console.log(JSON.stringify(compareTreeFormer(obj1, obj2)))
+console.log('JSON', formatSelector(compareTreeFormer(obj1, obj2), 'json'))
