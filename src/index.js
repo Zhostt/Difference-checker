@@ -35,8 +35,7 @@ export const compareTreeFormer = (object1, object2) => {
   // statuses: removed, added, equal, modified, stringified1, stringified2
   const innerTreeFormer = (file1, file2, depthAcc) => {
     const keysAll = Object.keys(file1).concat(Object.keys(file2));
-    const keysAllUniq = [...new Set(keysAll)].sort(); 
-
+    const keysAllUniq = [...new Set(keysAll)].sort();
     // Итерирующая каждый ключ функция
     const iter = (key, depth) => {
       const value1 = file1[key];
@@ -61,12 +60,6 @@ export const compareTreeFormer = (object1, object2) => {
             key, status: modified, depth, value1, value2,
           });
         }
-        // Тут нужна рекурсия - если оба значения = объекты
-      } else if (_.isObject(value1) && _.isObject(value2)) {
-        return ({
-          key, status: nested, depth, value1: innerTreeFormer(value1, value2, depth + 1),
-        });
-
         // Если первое значение объект, второе нет
       } else if (((_.isObject(value1) && !_.isObject(value2)))) {
         return ({
@@ -79,6 +72,10 @@ export const compareTreeFormer = (object1, object2) => {
           key, status: stringified2, depth, value1, value2,
         });
       }
+      // И если оба значения - объект, то ныряем в рекурсию
+      return ({
+        key, status: nested, depth, value1: innerTreeFormer(value1, value2, depth + 1),
+      })
     };
     return keysAllUniq.map((key) => iter(key, depthAcc));
   };

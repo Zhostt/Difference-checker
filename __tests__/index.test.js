@@ -11,6 +11,7 @@ const expectedBasic = `{
   + verbose: true
 }`;
 
+
 const expectedStylish = `{
     common: {
       + follow: false
@@ -88,9 +89,7 @@ describe('GenDiff - nested json yml diff', () => {
   test('Gendiff nexted PLAIN - JSON, YML', () => {
     expect(genDiff(path5NestedJSON, path6NestedYML, 'plain')).toEqual(expectedPlain);
   });
-});
-/*
-  // FLAT structure tests. Obsolete - because of no sort function.
+  // FLAT structure tests.
   test('Gendiff plain JSON', () => {
     expect(genDiff(path1, path2)).toEqual(expectedBasic);
   });
@@ -100,4 +99,6 @@ describe('GenDiff - nested json yml diff', () => {
   test('Gendiff plain JSON vs YML', () => {
     expect(genDiff(path1, path4Yml)).toEqual(expectedBasic);
   });
-*/
+});
+
+  
