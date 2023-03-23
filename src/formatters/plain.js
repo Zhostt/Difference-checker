@@ -1,7 +1,7 @@
 const plain = (arrayTree) => {
   // node structure = {key, status, depth, value1, value2}
   // statuses: removed, added, equal, modified, stringified1, stringified2
-  const [removed, added, equal, modified, nested, stringified1, stringified2] = ['removed', 'added', 'equal', 'modified', 'nested', 'stringified1', 'stringified2'];
+  const [removed, added, modified, nested, stringified1, stringified2] = ['removed', 'added', 'modified', 'nested', 'stringified1', 'stringified2'];
 
   const iter = (array, ancestry) => {
     let resultString = '';
@@ -11,7 +11,7 @@ const plain = (arrayTree) => {
         key, status, value1, value2,
       } = object;
         // To prevent '.' in the begin of the path (like '.a.b.c')
-      let newPath = ancestry === '' ? key : `${ancestry}.${key}`;
+      const newPath = ancestry === '' ? key : `${ancestry}.${key}`;
       // set quotes for string values, no quotes for others
       const value1Quotes = typeof (value1) === 'string' ? `'${value1}'` : value1;
       const value2Quotes = typeof (value2) === 'string' ? `'${value2}'` : value2;

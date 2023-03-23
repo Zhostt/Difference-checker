@@ -1,4 +1,3 @@
-import YAML from 'yaml';
 import stringParserToObject from '../src/parsers.js';
 
 const file1STR = `{
