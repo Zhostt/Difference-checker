@@ -4,9 +4,7 @@ const plain = (arrayTree) => {
   const [removed, added, modified, nested, stringified1, stringified2] = ['removed', 'added', 'modified', 'nested', 'stringified1', 'stringified2'];
 
   const iter = (array, ancestry) => {
-    let resultString = '';
-
-    for (const object of array) {
+    const objectFormatter = (acc, object) => {
       const {
         key, status, value1, value2,
       } = object;
@@ -18,28 +16,28 @@ const plain = (arrayTree) => {
 
       switch (status) {
         case removed:
-          resultString += `Property '${newPath}' was removed\n`;
-          break;
+          acc += `Property '${newPath}' was removed\n`;
+          return acc;
         case added:
-          resultString += `Property '${newPath}' was added with value: ${value2Quotes}\n`;
-          break;
+          acc += `Property '${newPath}' was added with value: ${value2Quotes}\n`;
+          return acc;
         case modified:
-          resultString += `Property '${newPath}' was updated. From ${value1Quotes} to ${value2Quotes}\n`;
-          break;
+          acc += `Property '${newPath}' was updated. From ${value1Quotes} to ${value2Quotes}\n`;
+          return acc;
         case nested:
-          resultString += iter(value1, newPath);
-          break;
+          acc += iter(value1, newPath);
+          return acc;
         case stringified1:
-          resultString += value2 === undefined ? `Property '${newPath}' was removed\n` : `Property '${newPath}' was updated. From [complex value] to ${value2Quotes}\n`;
-          break;
+          acc += value2 === undefined ? `Property '${newPath}' was removed\n` : `Property '${newPath}' was updated. From [complex value] to ${value2Quotes}\n`;
+          return acc;
         case stringified2:
-          resultString += value1 === undefined ? `Property '${newPath}' was added with value: [complex value]\n` : `Property '${newPath}' was updated. From ${value1Quotes} to [complex value]\n`;
-          break;
+          acc += value1 === undefined ? `Property '${newPath}' was added with value: [complex value]\n` : `Property '${newPath}' was updated. From ${value1Quotes} to [complex value]\n`;
+          return acc;
         default:
-          break;
+          return acc;
       }
-    }
-    return resultString;
+    };
+    return array.reduce(objectFormatter, '');
   };
   return (iter(arrayTree, '')).slice(0, -1); // slice to cut the last \n
 };
