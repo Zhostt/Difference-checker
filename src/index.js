@@ -37,9 +37,9 @@ export const compareTreeFormer = (object1, object2) => {
   const innerTreeFormer = (file1, file2, depthAcc) => {
     const keysAll = Object.keys(file1).concat(Object.keys(file2));
     const nonMutatingSort = (array) => {
-      const copy = [...array]
-      return array.sort()
-    }
+      const copy = [...array];
+      return copy.sort();
+    };
     const keysAllUniq = nonMutatingSort([...new Set(keysAll)]);
     // Итерирующая каждый ключ функция
     const iter = (key, depth) => {

@@ -42,7 +42,6 @@ const plain = (arrayTree) => {
   return (iter(arrayTree, '')).slice(0, -1); // slice to cut the last \n
 };
 
-
 export default plain;
 
 // for quick  test purposes
