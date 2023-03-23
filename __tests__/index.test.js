@@ -2,7 +2,6 @@ import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import genDiff from '../src/index.js';
 
-
 const expectedBasic = `{
   - follow: false
     host: hexlet.io
@@ -25,7 +24,7 @@ const expectedStylish = `{
         }
         setting6: {
             doge: {
-              - wow:
+              - wow: 
               + wow: so much
             }
             key: value

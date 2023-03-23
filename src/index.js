@@ -97,7 +97,6 @@ const genDiff = (path1, path2, format = 'stylish') => {
   return formatSelector(compareTree, format);
 };
 
-
 export default genDiff;
 /*
 const obj1 = {

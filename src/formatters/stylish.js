@@ -33,6 +33,9 @@ const stylish = (array, space = '    ') => {
     } = object;
     const margin = space.repeat(depth).slice(0, -leftMargin);
     const marginSizeOfEqualSign = margin.slice(0, leftMargin);
+
+/*
+    // spaces should not be added if value is ''. Obsolete.
     let [space1, space2] = [' ', ' '];
     if (value1 === '') {
       space1 = '';
@@ -40,35 +43,35 @@ const stylish = (array, space = '    ') => {
     if (value2 === '') {
       space2 = '';
     }
-
+*/
     switch (status) {
       case removed:
-        acc += `${margin}${removedSign}${key}:${space1}${value1}\n`;
+        acc += `${margin}${removedSign}${key}: ${value1}\n`;
         return acc;
       case added:
-        acc += `${margin}${addedSign}${key}:${space2}${value2}\n`;
+        acc += `${margin}${addedSign}${key}: ${value2}\n`;
         return acc;
       case equal:
-        acc += `${margin}${equalSign}${key}:${space1}${value1}\n`;
+        acc += `${margin}${equalSign}${key}: ${value1}\n`;
         return acc;
       case modified:
-        acc += `${margin}${removedSign}${key}:${space1}${value1}\n`;
-        acc += `${margin}${addedSign}${key}:${space2}${value2}\n`;
+        acc += `${margin}${removedSign}${key}: ${value1}\n`;
+        acc += `${margin}${addedSign}${key}: ${value2}\n`;
         return acc;
       case nested:
-        acc += `${margin}${equalSign}${key}:${space1}{\n${stylish(value1)}${margin + marginSizeOfEqualSign}}\n`;
+        acc += `${margin}${equalSign}${key}: {\n${stylish(value1)}${margin + marginSizeOfEqualSign}}\n`;
         return acc;
       case stringified1:
-        acc += `${margin}${removedSign}${key}:${space1}${stringifyObj(value1, depth + 1)}\n`;
+        acc += `${margin}${removedSign}${key}: ${stringifyObj(value1, depth + 1)}\n`;
         if (value2 !== undefined) {
-          acc += `${margin}${addedSign}${key}:${space2}${(value2)}\n`;
+          acc += `${margin}${addedSign}${key}: ${(value2)}\n`;
         }
         return acc;
       case stringified2:
         if (value1 !== undefined) {
-          acc += `${margin}${removedSign}${key}:${space1}${(value1)}\n`;
+          acc += `${margin}${removedSign}${key}: ${(value1)}\n`;
         }
-        acc += `${margin}${addedSign}${key}:${space2}${stringifyObj(value2, depth + 1)}\n`;
+        acc += `${margin}${addedSign}${key}: ${stringifyObj(value2, depth + 1)}\n`;
         return acc;
       default:
         console.log('ERROR - wrong status type in recieved object, check compareTreeFormer func');
