@@ -36,7 +36,11 @@ export const compareTreeFormer = (object1, object2) => {
   // statuses: removed, added, equal, modified, stringified1, stringified2
   const innerTreeFormer = (file1, file2, depthAcc) => {
     const keysAll = Object.keys(file1).concat(Object.keys(file2));
-    const keysAllUniq = [...new Set(keysAll)].sort();
+    const nonMutatingSort = (array) => {
+      const copy = [...array]
+      return array.sort()
+    }
+    const keysAllUniq = nonMutatingSort([...new Set(keysAll)]);
     // Итерирующая каждый ключ функция
     const iter = (key, depth) => {
       const value1 = file1[key];

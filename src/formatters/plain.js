@@ -14,7 +14,6 @@ const plain = (arrayTree) => {
       const value1Quotes = typeof (value1) === 'string' ? `'${value1}'` : value1;
       const value2Quotes = typeof (value2) === 'string' ? `'${value2}'` : value2;
 
-      /* eslint-disable no-param-reassign */
       switch (status) {
         case removed:
           acc += `Property '${newPath}' was removed\n`;
@@ -42,7 +41,7 @@ const plain = (arrayTree) => {
   };
   return (iter(arrayTree, '')).slice(0, -1); // slice to cut the last \n
 };
-/* eslint-enable no-param-reassign */
+
 
 export default plain;
 
