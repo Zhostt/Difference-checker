@@ -97,7 +97,6 @@ export const genDiff = (path1, path2, format = 'stylish') => {
   return formatSelector(compareTree, format);
 };
 
-
 const obj1 = {
   a: {
     b: {
@@ -127,6 +126,5 @@ const obj2 = {
   added: 'second',
 };
 
-
-console.log(JSON.stringify(compareTreeFormer(obj1, obj2)))
-console.log('JSON', formatSelector(compareTreeFormer(obj1, obj2), 'json'))
+console.log(JSON.stringify(compareTreeFormer(obj1, obj2)));
+console.log('JSON', formatSelector(compareTreeFormer(obj1, obj2), 'json'));
