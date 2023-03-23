@@ -1,6 +1,7 @@
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import * as gendiff from '../src/index.js';
+import genDiff from '../src/index.js';
+
 
 const expectedBasic = `{
   - follow: false
@@ -80,22 +81,22 @@ const path6NestedYML = '__fixtures__/file2Nested.YAML';
 
 describe('GenDiff - nested json yml diff', () => {
   test('Gendiff empty path', () => {
-    expect(gendiff.genDiff('', '')).toEqual('enter valid path');
+    expect(genDiff('', '')).toEqual('enter valid path');
   });
   test('Gendiff nexted STYLISH - JSON, YML', () => {
-    expect(gendiff.genDiff(path5NestedJSON, path6NestedYML)).toEqual(expectedStylish);
+    expect(genDiff(path5NestedJSON, path6NestedYML)).toEqual(expectedStylish);
   });
   test('Gendiff nexted PLAIN - JSON, YML', () => {
-    expect(gendiff.genDiff(path5NestedJSON, path6NestedYML, 'plain')).toEqual(expectedPlain);
+    expect(genDiff(path5NestedJSON, path6NestedYML, 'plain')).toEqual(expectedPlain);
   });
   // FLAT structure tests. Kinda obsolete.
   test('Gendiff plain JSON', () => {
-    expect(gendiff.genDiff(path1, path2)).toEqual(expectedBasic);
+    expect(genDiff(path1, path2)).toEqual(expectedBasic);
   });
   test('Gendiff plain YML', () => {
-    expect(gendiff.genDiff(path3Yml, path4Yml)).toEqual(expectedBasic);
+    expect(genDiff(path3Yml, path4Yml)).toEqual(expectedBasic);
   });
   test('Gendiff plain JSON vs YML', () => {
-    expect(gendiff.genDiff(path1, path4Yml)).toEqual(expectedBasic);
+    expect(genDiff(path1, path4Yml)).toEqual(expectedBasic);
   });
 });
