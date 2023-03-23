@@ -8,7 +8,7 @@ const stringParserToObject = (contentString, format) => {
   if (format === 'YML') {
     return YAML.parse(contentString);
   }
-  console.log('unknown format type. Try YAML or JSON')
+  console.log('unknown format type. Try YAML or JSON');
   return null;
 };
 

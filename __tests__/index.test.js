@@ -11,7 +11,6 @@ const expectedBasic = `{
   + verbose: true
 }`;
 
-
 const expectedStylish = `{
     common: {
       + follow: false
@@ -100,5 +99,3 @@ describe('GenDiff - nested json yml diff', () => {
     expect(genDiff(path1, path4Yml)).toEqual(expectedBasic);
   });
 });
-
-  

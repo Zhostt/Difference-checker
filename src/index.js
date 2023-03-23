@@ -15,6 +15,7 @@ export const checkFileExtension = (pathGiven) => {
     return YML;
   }
   console.log('unexpected file extension. Try yml/yaml or json');
+  return null;
 };
 
 // Превращатель пути в абсолютный
@@ -75,7 +76,7 @@ export const compareTreeFormer = (object1, object2) => {
       // И если оба значения - объект, то ныряем в рекурсию
       return ({
         key, status: nested, depth, value1: innerTreeFormer(value1, value2, depth + 1),
-      })
+      });
     };
     return keysAllUniq.map((key) => iter(key, depthAcc));
   };
