@@ -16,23 +16,17 @@ const plain = (arrayTree) => {
 
       switch (status) {
         case removed:
-          acc += `Property '${newPath}' was removed\n`;
-          return acc;
+          return `${acc}Property '${newPath}' was removed\n`;
         case added:
-          acc += `Property '${newPath}' was added with value: ${value2Quotes}\n`;
-          return acc;
+          return `${acc}Property '${newPath}' was added with value: ${value2Quotes}\n`;
         case modified:
-          acc += `Property '${newPath}' was updated. From ${value1Quotes} to ${value2Quotes}\n`;
-          return acc;
+          return `${acc}Property '${newPath}' was updated. From ${value1Quotes} to ${value2Quotes}\n`;
         case nested:
-          acc += iter(value1, newPath);
-          return acc;
+          return `${acc}${iter(value1, newPath)}`;
         case stringified1:
-          acc += value2 === undefined ? `Property '${newPath}' was removed\n` : `Property '${newPath}' was updated. From [complex value] to ${value2Quotes}\n`;
-          return acc;
+          return `${acc}${value2 === undefined ? `Property '${newPath}' was removed\n` : `Property '${newPath}' was updated. From [complex value] to ${value2Quotes}\n`}`;
         case stringified2:
-          acc += value1 === undefined ? `Property '${newPath}' was added with value: [complex value]\n` : `Property '${newPath}' was updated. From ${value1Quotes} to [complex value]\n`;
-          return acc;
+          return `${acc}${value1 === undefined ? `Property '${newPath}' was added with value: [complex value]\n` : `Property '${newPath}' was updated. From ${value1Quotes} to [complex value]\n`}`
         default:
           return acc;
       }
