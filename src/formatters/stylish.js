@@ -32,60 +32,37 @@ const stylish = (array, space = '    ') => {
     const margin = space.repeat(depth).slice(0, -leftMargin);
     const marginSizeOfEqualSign = margin.slice(0, leftMargin);
 
-    /*
-    // spaces should not be added if value is ''. Obsolete.
-    let [space1, space2] = [' ', ' '];
-    if (value1 === '') {
-      space1 = '';
-    }
-    if (value2 === '') {
-      space2 = '';
-    }
-*/
     switch (status) {
       case removed:
-        acc += `${margin}${removedSign}${key}: ${value1}\n`;
-        return acc;
+        return `${acc}${margin}${removedSign}${key}: ${value1}\n`;
       case added:
-        acc += `${margin}${addedSign}${key}: ${value2}\n`;
-        return acc;
+        return `${acc}${margin}${addedSign}${key}: ${value2}\n`;
       case equal:
-        acc += `${margin}${equalSign}${key}: ${value1}\n`;
-        return acc;
+        return `${acc}${margin}${equalSign}${key}: ${value1}\n`;
       case modified:
-        acc += `${margin}${removedSign}${key}: ${value1}\n`;
-        acc += `${margin}${addedSign}${key}: ${value2}\n`;
-        return acc;
+        return `${acc}${margin}${removedSign}${key}: ${value1}\n${margin}${addedSign}${key}: ${value2}\n`;
       case nested:
-        acc += `${margin}${equalSign}${key}: {\n${stylish(value1)}${margin + marginSizeOfEqualSign}}\n`;
-        return acc;
+        return `${acc}${margin}${equalSign}${key}: {\n${stylish(value1)}${margin + marginSizeOfEqualSign}}\n`;
       case stringified1:
-        acc += `${margin}${removedSign}${key}: ${stringifyObj(value1, depth + 1)}\n`;
         if (value2 !== undefined) {
-          acc += `${margin}${addedSign}${key}: ${(value2)}\n`;
+          return `${acc}${margin}${removedSign}${key}: ${stringifyObj(value1, depth + 1)}\n${margin}${addedSign}${key}: ${(value2)}\n`;
         }
-        return acc;
+        return `${acc}${margin}${removedSign}${key}: ${stringifyObj(value1, depth + 1)}\n`;
       case stringified2:
         if (value1 !== undefined) {
-          acc += `${margin}${removedSign}${key}: ${(value1)}\n`;
+          return `${margin}${removedSign}${key}: ${(value1)}\n${margin}${addedSign}${key}: ${stringifyObj(value2, depth + 1)}\n`;
         }
-        acc += `${margin}${addedSign}${key}: ${stringifyObj(value2, depth + 1)}\n`;
-        return acc;
+        return `${acc}${margin}${addedSign}${key}: ${stringifyObj(value2, depth + 1)}\n`;
       default:
-        console.log('ERROR - wrong status type in recieved object, check compareTreeFormer func');
+        throw new Error(`Unknown status: ${status}`);;
     }
-    return acc;
   };
 
-  //  Cannot destructure property 'key' of 'object' as it is undefined.
-  // If using  array.reduce(iter,''). Dunno why.
-  let result = '';
-  for (const object of array) {
-    result += iter('', object);
-  }
-
+  const result = array.reduce(iter,'')
   return result;
 };
+
+
 
 export default stylish;
 
