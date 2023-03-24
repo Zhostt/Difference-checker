@@ -1,7 +1,7 @@
 const plain = (arrayTree) => {
   // node structure = {key, status, depth, value1, value2}
   // statuses: removed, added, equal, modified, stringified1, stringified2
-  const [removed, added, modified, nested, stringified1, stringified2] = ['removed', 'added', 'modified', 'nested', 'stringified1', 'stringified2'];
+  const [removed, added, modified, equal, nested, stringified1, stringified2] = ['removed', 'added', 'modified', 'equal', 'nested', 'stringified1', 'stringified2'];
 
   const iter = (array, ancestry) => {
     const objectFormatter = (acc, object) => {
@@ -27,8 +27,10 @@ const plain = (arrayTree) => {
           return `${acc}${value2 === undefined ? `Property '${newPath}' was removed\n` : `Property '${newPath}' was updated. From [complex value] to ${value2Quotes}\n`}`;
         case stringified2:
           return `${acc}${value1 === undefined ? `Property '${newPath}' was added with value: [complex value]\n` : `Property '${newPath}' was updated. From ${value1Quotes} to [complex value]\n`}`;
-        default:
+        case equal:
           return acc;
+        default:
+          throw new Error(`Unknown status: ${status}`);
       }
     };
     return array.reduce(objectFormatter, '');

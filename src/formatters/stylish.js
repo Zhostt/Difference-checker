@@ -16,11 +16,9 @@ const stylish = (array, space = '    ') => {
       .reduce((acc, key) => {
         const value = obj[key];
         if (!_.isObject(value)) {
-          acc += `\n${margin}${key}: ${value}`;
-          return acc;
+          return `${acc}\n${margin}${key}: ${value}`;
         }
-        acc += `\n${margin}${key}: ${stringifyObj(value, innderDepth + 1)}`;
-        return acc;
+        return `${acc}\n${margin}${key}: ${stringifyObj(value, innderDepth + 1)}`;
       }, '');
     const resultString = `{${objString}\n${margin.slice(0, -spaceLength)}}`;
     return resultString;
