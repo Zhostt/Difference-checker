@@ -54,15 +54,13 @@ const stylish = (array, space = '    ') => {
         }
         return `${acc}${margin}${addedSign}${key}: ${stringifyObj(value2, depth + 1)}\n`;
       default:
-        throw new Error(`Unknown status: ${status}`);;
+        throw new Error(`Unknown status: ${status}`);
     }
   };
 
-  const result = array.reduce(iter,'')
+  const result = array.reduce(iter, '');
   return result;
 };
-
-
 
 export default stylish;
 
