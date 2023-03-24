@@ -6,7 +6,14 @@
 My second project from Hexlet frontend course.
 
 It compares two configuration files and shows a difference.
-Can be used through command line interface or directly from .js files.
+Usage: gendiff [options] <filepath1> <filepath2>
+
+Compares two configuration files and shows a difference.
+
+Options:
+  -V, --version        output the version number
+  -f, --format <type>  output format (default: "stylish")
+  -h, --help           display help for command
 
 
 https://asciinema.org/a/567785 - using -h command, comparing 2 JSON files. 
