@@ -26,7 +26,7 @@ const plain = (arrayTree) => {
         case stringified1:
           return `${acc}${value2 === undefined ? `Property '${newPath}' was removed\n` : `Property '${newPath}' was updated. From [complex value] to ${value2Quotes}\n`}`;
         case stringified2:
-          return `${acc}${value1 === undefined ? `Property '${newPath}' was added with value: [complex value]\n` : `Property '${newPath}' was updated. From ${value1Quotes} to [complex value]\n`}`
+          return `${acc}${value1 === undefined ? `Property '${newPath}' was added with value: [complex value]\n` : `Property '${newPath}' was updated. From ${value1Quotes} to [complex value]\n`}`;
         default:
           return acc;
       }

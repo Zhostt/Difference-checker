@@ -36,11 +36,8 @@ export const compareTreeFormer = (object1, object2) => {
   // statuses: removed, added, equal, modified, stringified1, stringified2
   const innerTreeFormer = (file1, file2, depthAcc) => {
     const keysAll = Object.keys(file1).concat(Object.keys(file2));
-    const nonMutatingSort = (array) => {
-      const copy = [...array];
-      return copy.sort();
-    };
-    const keysAllUniq = nonMutatingSort([...new Set(keysAll)]);
+    const keysAllUniq = [...new Set(keysAll)];
+    const keysAllUniqSorted = _.sortBy(keysAllUniq, [(str) => str])
     // Итерирующая каждый ключ функция
     const iter = (key, depth) => {
       const value1 = file1[key];
@@ -82,7 +79,7 @@ export const compareTreeFormer = (object1, object2) => {
         key, status: nested, depth, value1: innerTreeFormer(value1, value2, depth + 1),
       });
     };
-    return keysAllUniq.map((key) => iter(key, depthAcc));
+    return keysAllUniqSorted.map((key) => iter(key, depthAcc));
   };
   return innerTreeFormer(object1, object2, 1);
 };
