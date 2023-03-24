@@ -50,7 +50,7 @@ const stylish = (array, space = '    ') => {
         return `${acc}${margin}${removedSign}${key}: ${stringifyObj(value1, depth + 1)}\n`;
       case stringified2:
         if (value1 !== undefined) {
-          return `${margin}${removedSign}${key}: ${(value1)}\n${margin}${addedSign}${key}: ${stringifyObj(value2, depth + 1)}\n`;
+          return `${acc}${margin}${removedSign}${key}: ${(value1)}\n${margin}${addedSign}${key}: ${stringifyObj(value2, depth + 1)}\n`;
         }
         return `${acc}${margin}${addedSign}${key}: ${stringifyObj(value2, depth + 1)}\n`;
       default:
